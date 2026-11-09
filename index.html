@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tax Machina | SA Tax Calculator &amp; Optimiser</title>
+<style>
+:root{--bg:#f3f5f8;--card:#fff;--ink:#0f1c33;--mut:#5d6779;--line:#e3e7ee;--acc:#0b6e4f;--acc2:#eaf6f1;--warn:#8a5200;--warnbg:#fff5e0;--navy:#0f1c33;--shadow:0 1px 2px rgba(15,28,51,.05),0 4px 14px rgba(15,28,51,.05)}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1118;--card:#161c26;--ink:#e8ecf2;--mut:#9aa5b6;--line:#263040;--acc:#4fd1a1;--acc2:#13302a;--warn:#f1c27a;--warnbg:#332612;--navy:#0a0e14;--shadow:none}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.top{background:var(--navy);color:#fff}
+.top .in{max-width:1200px;margin:auto;padding:22px 20px 24px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-.01em}
+.logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#4fd1a1,#0b6e4f);display:grid;place-items:center;font-size:16px;color:#06251b;font-weight:800}
+.top p{margin:8px 0 0;color:#b9c3d4;max-width:760px;font-size:14px}
+.tag{display:inline-block;margin-top:10px;font-size:12px;color:#8ee6c3;border:1px solid #2a5a49;border-radius:20px;padding:2px 10px;margin-right:6px}
+main{max-width:1200px;margin:auto;padding:20px 20px 30px;display:grid;grid-template-columns:minmax(300px,410px) 1fr;gap:20px;align-items:start}
+@media(max-width:860px){main{grid-template-columns:1fr;padding:14px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.card h2{margin:0 0 10px;font-size:15px;font-weight:700;letter-spacing:-.005em;display:flex;align-items:center;gap:8px}
+.card h2 .nn{background:var(--acc2);color:var(--acc);border-radius:6px;font-size:12px;padding:1px 8px}
+label{display:block;font-size:12.5px;font-weight:500;color:var(--mut);margin:12px 0 4px}
+input,select{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink);font:inherit;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus{outline:0;border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 22%,transparent)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chk{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:14px}
+.chk input{width:auto}
+.hero{background:linear-gradient(135deg,var(--navy),#14385a);color:#fff;border:0}
+.hero .small{color:#b9c3d4}
+.big{font-size:34px;font-weight:800;letter-spacing:-.02em;color:#fff;transition:transform .25s,color .25s}
+.big.pulse{transform:scale(1.03);color:#8ee6c3}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:12px}
+.kpi{background:rgba(255,255,255,.08);border-radius:10px;padding:10px 12px}
+.kpi small{color:#b9c3d4;display:block;font-size:12px}
+.kpi b{font-size:17px;color:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:7px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+tr.t td{font-weight:700;background:color-mix(in srgb,var(--acc) 6%,transparent)}
+.lever{border:1px solid var(--line);border-left:4px solid var(--acc);padding:10px 14px;margin:10px 0;border-radius:10px}
+.lever h3{margin:0 0 3px;font-size:14px}
+.lever .ref{font-size:12px;color:var(--mut);margin-top:4px}
+.note{background:var(--warnbg);color:var(--warn);padding:9px 12px;border-radius:9px;font-size:13px;margin:10px 0}
+button{background:var(--acc);color:#fff;border:0;border-radius:9px;padding:8px 14px;font:inherit;font-weight:600;cursor:pointer;margin:6px 6px 0 0}
+@media(prefers-color-scheme:dark){button{color:#07130e}}
+button.s{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.hero button.s{color:#8ee6c3;border-color:#8ee6c3}
+details{margin:8px 0}summary{cursor:pointer;font-weight:600}
+.small{font-size:12px;color:var(--mut)}
+a{color:var(--acc)}
+.pp{background:var(--acc2);border-radius:10px;padding:10px 12px;margin-top:8px}
+.pp .row5{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+footer{max-width:1200px;margin:auto;padding:6px 20px 30px;color:var(--mut);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media print{button,.noprint{display:none}body{background:#fff}.card{break-inside:avoid;box-shadow:none}.top,.hero{background:#fff!important;color:#000}.big,.kpi b{color:#000}}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+<div class="brand"><span class="logo">T</span>Tax Machina</div>
+<p>Estimate your normal tax, then test <em>legal</em> ways to reduce it. Every lever cites South African legislation.</p>
+<span class="tag">Works offline</span><span class="tag">Individuals</span><span class="tag">2026/27 &amp; 2025/26</span>
+</div></header>
+<main>
+<section>
+ <div class="card">
+  <h2><span class="nn">1</span>Basics</h2>
+  <label>Tax year (year of assessment)</label>
+  <select id="year"><option value="2027" selected>2026/27 (1 Mar 2026 – 28 Feb 2027)</option><option value="2026">2025/26 (1 Mar 2025 – 28 Feb 2026)</option></select>
+  <label>Your age at end of tax year</label>
+  <select id="age"><option value="0">Under 65</option><option value="1">65 – 74</option><option value="2">75 and older</option></select>
+  <div class="row">
+   <div><label>People on medical aid (you + dependants)</label><input id="medN" type="number" min="0" value="1"></div>
+   <div><label>Medical aid contributions paid / yr (R)</label><input id="medC" type="number" min="0" value="0"></div>
+  </div>
+  <label>Out-of-pocket medical expenses / yr (R)</label><input id="oop" type="number" min="0" value="0">
+  <div class="chk"><input id="disab" type="checkbox"><label for="disab" style="margin:0;color:var(--ink)">You or a dependant has a disability (s6B 33.3% route)</label></div>
+ </div>
+
+ <div class="card">
+  <h2><span class="nn">2</span>Income streams (annual, R)</h2>
+  <div class="row">
+   <div><label>Monthly gross salary</label><input id="sal" type="number" value="30000"></div>
+   <div><label>Annual bonus</label><input id="bonus" type="number" value="0"></div>
+  </div>
+  <div class="row">
+   <div><label>Commission / other employment income</label><input id="comm" type="number" value="0"></div>
+   <div><label>Employer RA/pension contribution (fringe benefit)</label><input id="empRA" type="number" value="0"></div>
+  </div>
+  <div class="row">
+   <div><label>Travel allowance received</label><input id="trav" type="number" value="0"></div>
+   <div><label>…less business-use cost per logbook</label><input id="travC" type="number" value="0"></div>
+  </div>
+  <div class="row">
+   <div><label>Freelance / business net profit</label><input id="biz" type="number" value="0"></div>
+   <div><label>Rental: net profit (loss if negative)</label><input id="rent" type="number" value="0"></div>
+  </div>
+  <div class="row">
+   <div><label>SA interest earned</label><input id="int" type="number" value="0"></div>
+   <div><label>Foreign interest / other taxable</label><input id="oth" type="number" value="0"></div>
+  </div>
+  <label>SA company dividends (gross, before 20% dividends tax)</label><input id="div" type="number" value="0">
+ </div>
+
+ <div class="card">
+  <h2><span class="nn">3</span>What you already do</h2>
+  <div class="row">
+   <div><label>Your own RA / pension / provident contributions / yr</label><input id="ownRA" type="number" value="0"></div>
+   <div><label>s18A donations already made / yr</label><input id="don" type="number" value="0"></div>
+  </div>
+  <div class="row">
+   <div><label>Capital gain: assets other than home (R)</label><input id="cg" type="number" value="0"></div>
+   <div><label>Capital gain: primary residence (R)</label><input id="cgRes" type="number" value="0"></div>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="card hero">
+  <div class="small">Estimated normal tax payable</div>
+  <div class="big" id="outTax">R0</div>
+  <div class="kpis" style="margin-top:8px">
+   <div class="kpi"><small>Taxable income</small><b id="kTI"></b></div>
+   <div class="kpi"><small>Effective rate</small><b id="kEff"></b></div>
+   <div class="kpi"><small>Marginal rate</small><b id="kMar"></b></div>
+   <div class="kpi"><small>Monthly tax</small><b id="kMon"></b></div>
+  </div>
+  <div id="warn"></div>
+  <details open><summary>Workings</summary><table id="work"></table></details>
+  <button class="s noprint" onclick="window.print()">Print / save as PDF</button>
+ </div>
+
+ <div class="card">
+  <h2><span class="nn">4</span>Optimiser – test legal reductions</h2>
+  <div class="row">
+   <div><label>Extra RA contribution / yr (R)</label><input id="xRA" type="number" min="0" value="0"></div>
+   <div><label>Extra s18A donation / yr (R)</label><input id="xDon" type="number" min="0" value="0"></div>
+  </div>
+  <button onclick="maxRA()">Fill RA to legal maximum</button><button class="s" onclick="maxDon()">Fill donations to 10% limit</button>
+  <div id="scen" style="margin-top:10px"></div>
+ </div>
+
+ <div class="card">
+  <h2><span class="nn">5</span>Tax-free savings account (s12T) projection</h2>
+  <div class="row">
+   <div><label id="tfLbl">Contribution / yr</label><input id="tf" type="number" min="0" value="36000"></div>
+   <div><label>Years</label><input id="tfY" type="number" min="1" max="40" value="10"></div>
+  </div>
+  <label>Assumed return per year (%)</label><input id="tfR" type="number" step="0.5" value="9">
+  <div id="tfOut" style="margin-top:8px"></div>
+ </div>
+
+ <div class="card">
+  <h2><span class="nn">6</span>Ways to reduce your tax, ranked by value</h2>
+  <div id="levers"></div>
+ </div>
+
+ <div class="card">
+  <h2><span class="nn">7</span>Legal guardrails (avoidance vs evasion)</h2>
+  <p>Everything above is <b>tax planning using provisions Parliament deliberately wrote</b>. Crossing the line costs far more than the tax saved:</p>
+  <ul>
+   <li><b><a href="https://www.saflii.org/za/legis/consol_act/taa2011215/" target="_blank" rel="noopener">Tax Administration Act 28 of 2011</a>, s222–223:</b> understatement penalty from 25% (substantial understatement) up to 150% (intentional evasion) of the shortfall, plus interest (s187–189).</li>
+   <li><b><a href="https://www.saflii.org/za/legis/consol_act/taa2011215/" target="_blank" rel="noopener">TAA s235</a>:</b> intentional evasion or false statements are criminal offences (fine or up to 5 years).</li>
+   <li><b><a href="https://www.saflii.org/za/legis/consol_act/taa2011215/" target="_blank" rel="noopener">TAA s25, s29, s99</a>:</b> submit a full and true return; keep records for 5 years (logbooks, medical, s18A, RA certificates); SARS can generally assess up to 3 years after an original assessment, 5 years for self-assessments, with no limit for fraud.</li>
+   <li><b><a href="https://www.saflii.org/za/legis/consol_act/taa2011215/" target="_blank" rel="noopener">TAA s226–230</a>:</b> if you have under-declared in the past, a voluntary disclosure before an audit starts can remove criminal prosecution and cut penalties.</li>
+   <li><b>Anti-avoidance:</b> the General Anti-Avoidance Rule (<a href="https://www.sars.gov.za/legal-counsel/primary-legislation/acts-administered-by-the-commissioner/" target="_blank" rel="noopener">Income Tax Act 58 of 1962</a> s80A–80L) and, for VAT, s73 of the <a href="https://www.sars.gov.za/legal-counsel/primary-legislation/acts-administered-by-the-commissioner/" target="_blank" rel="noopener">VAT Act 89 of 1991</a>, can unwind schemes whose sole or main purpose is a tax benefit. Don't split income, back-date or “round-trip” assets just to cut tax.</li>
+   <li><b><a href="https://www.saflii.org/za/legis/consol_act/taa2011215/" target="_blank" rel="noopener">TAA s240</a>:</b> anyone who advises others on tax or prepares returns for a fee must be a registered tax practitioner.</li>
+  </ul>
+ </div>
+
+ <div class="card">
+  <h2><span class="nn">8</span>Legislation map</h2>
+  <table>
+   <tr><th>Topic</th><th>Provision</th></tr>
+   <tr><td>Tax rates, rebates</td><td>Income Tax Act 58 of 1962 s5(2), s6(2)&(6) (amounts set annually in the Budget)</td></tr>
+   <tr><td>Gross income, residence</td><td>ITA s1 “gross income” and “resident”; physical-presence test (more than 91 days in the current year and in each of the 5 preceding years, and more than 915 days in total across those 5 years)<div class="small">Residents are taxed on worldwide income (SARS Budget 2026 Tax Guide).</div>
+   <details><summary>Try the physical presence test</summary><div class="pp noprint">
+    <div class="small">Applies only if you are <b>not ordinarily resident</b> (SA is not your real home). Enter days physically in SA, per tax year (1 Mar – end Feb).</div>
+    <label>Days in SA this tax year</label><input id="ppC" type="number" min="0" max="366" value="0">
+    <label>Days in SA in each of the 5 preceding years</label>
+    <div class="row5"><input class="ppP" type="number" min="0" max="366" value="0"><input class="ppP" type="number" min="0" max="366" value="0"><input class="ppP" type="number" min="0" max="366" value="0"><input class="ppP" type="number" min="0" max="366" value="0"><input class="ppP" type="number" min="0" max="366" value="0"></div>
+    <div id="ppOut" style="margin-top:8px"></div>
+    <div class="small">Once resident this way, you stay resident until you are outside SA for a continuous period of at least 330 full days. A tax treaty may override the result.</div>
+   </div></details></td></tr>
+   <tr><td>Interest &amp; dividend exemptions</td><td>ITA s10(1)(i) (R23 800 / R34 500), s10(1)(k) (SA dividends)</td></tr>
+   <tr><td>General deductions</td><td>ITA s11(a), s23(g) (expenses incurred in production of income, not capital)</td></tr>
+   <tr><td>Retirement contributions</td><td>ITA s11F: lesser of R430 000 (R350 000 in 2025/26) and 27.5% of the greater of remuneration or taxable income</td></tr>
+   <tr><td>Donations</td><td>ITA s18A: up to 10% of taxable income to approved PBOs (receipt/certificate needed)</td></tr>
+   <tr><td>Medical credits</td><td>ITA s6A (scheme fees credit), s6B (additional medical expenses credit)</td></tr>
+   <tr><td>Tax-free investments</td><td>ITA s12T (R46 000 a year from 2026/27, R36 000 before; R500 000 lifetime; 40% penalty on excess)</td></tr>
+   <tr><td>Capital gains</td><td>ITA Eighth Schedule: R50 000 annual exclusion (R40 000 in 2025/26), 40% inclusion, R3m primary-residence exclusion (R2m in 2025/26) (para 5, 45–46)</td></tr>
+   <tr><td>Leases, premiums, improvements</td><td>ITA s11(f), s11(g) (see Act 58 of 1962 extract): allowances for lease premiums and lessee improvements</td></tr>
+   <tr><td>VAT (side businesses)</td><td>VAT Act 89 of 1991 s23: compulsory registration when taxable supplies exceed R2.3 million in 12 months; voluntary registration above R120 000; s16–17 input tax (thresholds per SARS Budget 2026 Tax Guide)</td></tr>
+   <tr><td>Procedure and penalties</td><td>Tax Administration Act 28 of 2011 s25, 29, 99, 187–189, 222–223, 226–230, 235</td></tr>
+  </table>
+  <p class="small">This is an estimate for planning, not tax advice. Figures are the SARS Budget 2026 tables for 2026/27. Verify with SARS or a registered tax practitioner before acting. Not modelled: UIF, SDL, provisional tax timing, foreign tax credits, retirement lump sums, s12J, company/trust structures, travel-allowance deemed-cost tables.</p>
+ </div>
+</section>
+</main>
+<footer><span>Designed by Kgori Mereki</span><span>Planning estimate only, not tax advice. Parameters: SARS Budget 2026 Tax Guide.</span></footer>
+
+<script>
+/*ENGINE_START*/
+var PARAMS={
+ 2027:{label:'2026/27',br:[[0,0,.18],[245100,44118,.26],[383100,79998,.31],[530200,125599,.36],[695800,185215,.39],[887000,259783,.41],[1878600,666339,.45]],
+  reb:[17820,9765,3249],med:[376,376,254],intEx:[23800,34500],raCap:430000,tfsaYear:46000,cgExcl:50000,resExcl:3000000},
+ 2026:{label:'2025/26',br:[[0,0,.18],[237100,42678,.26],[370500,77362,.31],[512800,121475,.36],[673000,179147,.39],[857900,251258,.41],[1817000,644489,.45]],
+  reb:[17235,9444,3145],med:[364,364,246],intEx:[23800,34500],raCap:350000,tfsaYear:36000,cgExcl:40000,resExcl:2000000}
+};
+var CONST={raPct:.275,donPct:.10,cgIncl:.4,tfsaLife:500000,dwt:.20};
+function num(x){x=parseFloat(x);return isFinite(x)?x:0}
+function bracket(ti,p){var b=p.br,r=b[0];for(var i=0;i<b.length;i++){if(ti>b[i][0])r=b[i]}return r[1]+r[2]*(Math.max(ti,0)-r[0])}
+function margRate(ti,p){var b=p.br,r=b[0];for(var i=0;i<b.length;i++){if(ti>b[i][0])r=b[i]}return r[2]}
+function medCredit(n,p){if(n<=0)return 0;var m=Math.min(n,2)*p.med[0];if(n>2)m+=(n-2)*p.med[2];return m*12}
+function compute(i,p){
+ var o={};
+ var emp=i.sal*12+i.bonus+i.comm+i.empRA+Math.max(0,i.trav-i.travC);
+ var intEx=Math.min(i.int,p.intEx[i.age>0?1:0]);
+ var gi=emp+i.biz+i.rent+i.int+i.oth;
+ var income=gi-intEx;
+ var gain=i.cg+Math.max(0,i.cgRes-p.resExcl);
+ var tcg=Math.max(0,gain-p.cgExcl)*CONST.cgIncl;
+ var before=income+tcg;
+ var remun=emp+i.biz;
+ var base=Math.max(remun,before);
+ var cap=Math.max(0,Math.min(p.raCap,CONST.raPct*base,before-tcg));
+ var contrib=i.ownRA+i.empRA+i.xRA;
+ var raDed=Math.min(contrib,cap);
+ var after=before-raDed;
+ var donLim=Math.max(0,CONST.donPct*after);
+ var donDed=Math.min(i.don+i.xDon,donLim);
+ var ti=Math.max(0,after-donDed);
+ var taxTable=bracket(ti,p);
+ var reb=p.reb[0]+(i.age>=1?p.reb[1]:0)+(i.age>=2?p.reb[2]:0);
+ var afterReb=Math.max(0,taxTable-reb);
+ var s6A=Math.min(medCredit(i.medN,p),Math.max(0,i.medC)),s6B=0;
+ if(i.medN>0||i.oop>0){
+  if(i.age>=1||i.disab){
+   s6B=.333*Math.max(0,i.medC-3*s6A)+.333*i.oop;
+  }else{
+   s6B=.25*Math.max(0,(i.medC-4*s6A+i.oop)-.075*ti);
+  }
+  if(i.medN<=0)s6B=0;
+ }
+ var mc=s6A+s6B;
+ var tax=Math.max(0,afterReb-mc);
+ o={emp:emp,intEx:intEx,gi:gi,income:income,tcg:tcg,before:before,cap:cap,contrib:contrib,raDed:raDed,raExcess:Math.max(0,contrib-cap),
+  after:after,donLim:donLim,donDed:donDed,ti:ti,taxTable:taxTable,reb:reb,s6A:s6A,s6B:s6B,mc:mc,tax:tax,
+  eff:ti>0?tax/Math.max(gi,1):0,marg:margRate(ti,p),dwt:CONST.dwt*i.div};
+ return o;
+}
+function physPresence(cur,prior){
+ var c1=cur>91,c2=prior.every(function(d){return d>91}),tot=prior.reduce(function(a,b){return a+b},0),c3=tot>915;
+ return {c1:c1,c2:c2,c3:c3,tot:tot,resident:c1&&c2&&c3};
+}
+/*ENGINE_END*/
+
+var $=function(id){return document.getElementById(id)};
+var fmt=function(x){return 'R'+Math.round(x).toLocaleString('en-ZA').replace(/,/g,' ')};
+var pct=function(x){return (x*100).toFixed(1)+'%'};
+function read(extra){
+ var i={age:num($('age').value),medN:num($('medN').value),medC:num($('medC').value),oop:num($('oop').value),disab:$('disab').checked,
+  sal:num($('sal').value),bonus:num($('bonus').value),comm:num($('comm').value),empRA:num($('empRA').value),
+  trav:num($('trav').value),travC:num($('travC').value),biz:num($('biz').value),rent:num($('rent').value),
+  int:num($('int').value),oth:num($('oth').value),div:num($('div').value),ownRA:num($('ownRA').value),don:num($('don').value),
+  cg:num($('cg').value),cgRes:num($('cgRes').value),xRA:0,xDon:0};
+ if(extra){i.xRA=num($('xRA').value);i.xDon=num($('xDon').value)}
+ return i;
+}
+function P(){return PARAMS[$('year').value]}
+function row(a,b,cls){return '<tr class="'+(cls||'')+'"><td>'+a+'</td><td class="n">'+b+'</td></tr>'}
+function maxRA(){var i=read(false),r=compute(i,P());$('xRA').value=Math.max(0,Math.round(r.cap-r.contrib));run()}
+function maxDon(){var i=read(true),r=compute(i,P());var cur=num($('don').value);$('xDon').value=Math.max(0,Math.round(r.donLim-cur));run()}
+function run(){
+ var p=P(),i=read(false),b=compute(i,p);
+ var ot=$('outTax'),nt=fmt(b.tax)+' / year';if(ot.textContent!==nt){ot.classList.add('pulse');setTimeout(function(){ot.classList.remove('pulse')},300)}ot.textContent=nt;
+ $('kTI').textContent=fmt(b.ti);$('kEff').textContent=pct(b.eff);$('kMar').textContent=b.ti>0?pct(b.marg):'0%';$('kMon').textContent=fmt(b.tax/12);
+ var w='';
+ w+=row('Employment income (salary, bonus, commission, fringe, taxable travel)',fmt(b.emp));
+ w+=row('Gross income (incl. business, rental, interest, other)',fmt(b.gi),'t');
+ w+=row('Less: exempt local interest (s10(1)(i))','('+fmt(b.intEx)+')');
+ w+=row('Income',fmt(b.income));
+ w+=row('Add: taxable capital gain (40% after '+fmt(p.cgExcl)+' exclusion)',fmt(b.tcg));
+ w+=row('Subtotal before s11F and s18A',fmt(b.before),'t');
+ w+=row('Less: retirement deduction s11F (limit '+fmt(b.cap)+')','('+fmt(b.raDed)+')');
+ w+=row('Less: donations s18A (limit '+fmt(b.donLim)+')','('+fmt(b.donDed)+')');
+ w+=row('Taxable income',fmt(b.ti),'t');
+ w+=row('Tax per table',fmt(b.taxTable));
+ w+=row('Less: rebates (primary/secondary/tertiary)','('+fmt(b.reb)+')');
+ w+=row('Less: medical scheme fees credit s6A','('+fmt(b.s6A)+')');
+ w+=row('Less: additional medical credit s6B','('+fmt(b.s6B)+')');
+ w+=row('Normal tax payable',fmt(b.tax),'t');
+ if(i.div>0)w+=row('Memo: dividends tax withheld at source (20%, final)',fmt(b.dwt));
+ $('work').innerHTML=w;
+ var wn='';
+ if(b.raExcess>0)wn+='<div class="note">Your retirement contributions exceed the s11F limit by '+fmt(b.raExcess)+'. The excess is not lost; it carries forward and is deemed contributed next year.</div>';
+ if(b.ti>0&&b.tax===0)wn+='<div class="note">Rebates and credits reduce your tax to zero. Credits are not refunded, so extra deductions will not reduce it further.</div>';
+ if(b.ti===0)wn+='<div class="note">Your taxable income is below the tax threshold. Nothing is payable; extra deductions would add no value.</div>';
+ $('warn').innerHTML=wn;
+ // scenario
+ var s=compute(read(true),p),saved=b.tax-s.tax;
+ var xr=num($('xRA').value),xd=num($('xDon').value);
+ var h='<table>'+row('Tax today',fmt(b.tax))+row('Tax with changes',fmt(s.tax))+row('Tax saved / year',fmt(saved),'t');
+ if(xr>0){var ded=Math.min(Math.max(0,s.cap-b.contrib),xr);h+=row('RA: portion deductible (headroom '+fmt(Math.max(0,b.cap-b.contrib))+')',fmt(Math.min(xr,Math.max(0,b.cap-b.contrib))));h+=row('RA: your net cash cost after tax saving',fmt(xr-saved))}
+ h+='</table>';
+ if(xr>0&&xr>Math.max(0,b.cap-b.contrib))h+='<div class="note">Part of the extra RA exceeds the s11F limit. It earns no deduction this year (it carries forward).</div>';
+ if(xd>0&&xd>Math.max(0,b.donLim-i.don))h+='<div class="note">Donations above 10% of taxable income are not deductible this year.</div>';
+ if(xr>0)h+='<div class="small">RA money is locked in until age 55 and at least two-thirds must be taken as an annuity (taxed as income), so you are shifting tax to retirement, usually at lower rates.</div>';
+ $('scen').innerHTML=h;
+ // TFSA
+ $('tfLbl').textContent='Contribution / yr (max '+fmt(p.tfsaYear)+')';var tf=Math.min(num($('tf').value),p.tfsaYear),yrs=Math.max(1,num($('tfY').value)),r=num($('tfR').value)/100,m=b.ti>0?b.marg:0;
+ var fvT=0,fvX=0,tot=0;
+ for(var k=0;k<yrs;k++){fvT=(fvT+tf)*(1+r);fvX=(fvX+tf)*(1+r*(1-m));tot+=tf}
+ var capped=tot>CONST.tfsaLife;
+ $('tfOut').innerHTML='<table>'+row('Paid in over '+yrs+' years',fmt(tot))+row('Value in TFSA (no tax on returns)',fmt(fvT))+row('Same savings in taxable account (returns taxed at '+pct(m)+')',fmt(fvX))+row('Advantage of TFSA',fmt(fvT-fvX),'t')+'</table>'+
+  '<div class="small"><b>Financial calculator workings (BGN mode, contributions at start of each year):</b><table>'+
+  row('TFSA: N / I/Y / PV / PMT',yrs+' / '+(r*100).toFixed(2)+'% / 0 / −'+fmt(tf))+row('TFSA: FV (CPT)',fmt(fvT))+
+  row('Taxable account: N / I/Y / PV / PMT',yrs+' / '+(r*(1-m)*100).toFixed(2)+'% / 0 / −'+fmt(tf))+row('Taxable account: FV (CPT)',fmt(fvX))+'</table></div>'+
+  (capped?'<div class="note">Lifetime TFSA limit is R500 000. Contributions beyond that attract a 40% penalty tax.</div>':'')+
+  '<div class="small">Assumption: returns taxed every year at your current marginal rate (ignores the R'+(p.intEx[0]).toLocaleString('en-ZA').replace(/,/g,' ')+' interest exemption). TFSA contributions are not tax deductible; the benefit is tax-free interest, dividends and gains.</div>';
+ // physical presence test
+ var pc=num($('ppC').value),pr=[].map.call(document.querySelectorAll('.ppP'),function(e){return num(e.value)}),pp=physPresence(pc,pr);
+ var ck=function(ok){return ok?'✔':'✘'};
+ $('ppOut').innerHTML='<table>'+row(ck(pp.c1)+' More than 91 days this year',pc+' days')+row(ck(pp.c2)+' More than 91 days in each of the 5 preceding years',pr.join(' / '))+row(ck(pp.c3)+' More than 915 days in total over those 5 years',pp.tot+' days')+row(pp.resident?'Result: tax resident under the physical presence test':'Result: not resident under this test','', 't')+'</table>';
+ // levers
+ var L=[],mr=b.ti>0?b.marg:0;
+ var raHead=Math.max(0,b.cap-b.contrib);
+ var rS=compute(Object.assign(read(false),{xRA:raHead}),p);
+ L.push({v:b.tax-rS.tax,h:'Retirement annuity / pension top-up',t:'You can still contribute about '+fmt(raHead)+' more and get a deduction (limit '+fmt(b.cap)+' = lesser of '+fmt(p.raCap)+' and 27.5% of your income). Fully using it would save about '+fmt(b.tax-rS.tax)+' this year. Marginal rate '+pct(mr)+'. Cheapest route is a debit order to an RA or an employer fund (employer contributions count too).',r:'ITA s11F; Tax Administration Act s29 (keep fund certificate)'});
+ var dH=Math.max(0,b.donLim-i.don);
+ var dS=compute(Object.assign(read(false),{xDon:dH}),p);
+ L.push({v:b.tax-dS.tax,h:'Donations to approved public benefit organisations',t:'Up to 10% of taxable income is deductible. Remaining room: '+fmt(dH)+'. It is a real gift, so only worth it if you want to give anyway; the state refunds '+pct(mr)+' of it. Get a s18A receipt.',r:'ITA s18A; TAA s29'});
+ var ex=p.intEx[i.age>0?1:0];
+ L.push({v:Math.max(0,i.int-ex)*mr,h:'Use your interest exemption – then move the rest',t:i.int<=ex?'You use '+fmt(i.int)+' of a '+fmt(ex)+' exemption, so about '+fmt(ex-i.int)+' more local interest is tax-free. Keep cash in interest-bearing accounts up to that point.':'Your interest ('+fmt(i.int)+') exceeds the '+fmt(ex)+' exemption; the excess costs about '+fmt((i.int-ex)*mr)+' in tax. Move the surplus to a TFSA, or to growth/dividend assets (SA dividends are income-tax exempt but carry 20% withholding).',r:'ITA s10(1)(i), s10(1)(k), s12T'});
+ L.push({v:p.tfsaYear*.09*mr,h:'Fill your tax-free savings account every year',t:fmt(p.tfsaYear)+' per year, R500 000 lifetime. See projection above. Not a deduction, but all growth is tax-free forever.',r:'ITA s12T'});
+ if(i.medN>0||i.oop>0||i.medC>0)L.push({v:b.mc,h:'Make sure medical credits are fully claimed',t:'Credits this year: s6A '+fmt(b.s6A)+', s6B '+fmt(b.s6B)+'. s6B needs contributions above 4× your s6A credits plus out-of-pocket costs above 7.5% of taxable income (33.3% route if 65+ or disability). Keep all receipts and the medical-aid tax certificate.',r:'ITA s6A, s6B'});
+ else L.push({v:0,h:'Medical scheme credits',t:'If you belong to a registered scheme, enter members and contributions above. Each of the first two members earns '+fmt(p.med[0]*12)+' a year, each additional dependant '+fmt(p.med[2]*12)+'.',r:'ITA s6A'});
+ L.push({v:Math.min(p.cgExcl,Math.max(0,i.cg))*CONST.cgIncl*mr,h:'Use the '+fmt(p.cgExcl)+' annual capital gains exclusion',t:'The first '+fmt(p.cgExcl)+' of net gains each year is exempt, and only 40% of the rest is taxed (maximum effective rate '+pct(.45*.4)+'). Spreading disposals across tax years uses the exclusion more than once. Avoid selling and immediately re-buying the same asset just to crystallise a loss (anti-avoidance: Eighth Schedule para 42 and 39A).',r:'ITA Eighth Schedule; para 5 (annual exclusion), 45 (primary residence exclusion)'});
+ L.push({v:0,h:'Claim every legitimate business or work expense',t:'Freelance and rental income is taxed on profit, so expenses actually incurred in earning it (not private or capital) reduce tax. Commission earners may claim home-office space; travel needs a logbook. Also check your lease premium and lessee improvement allowances (s11(f), s11(g)).',r:'ITA s11(a), s23(g), s11(e)–(g); TAA s29'});
+ L.push({v:0,h:'Side business and VAT',t:'Voluntary VAT registration lets you claim input tax but you must charge output VAT. Compulsory registration applies above R2.3 million of taxable supplies in 12 months; voluntary registration is possible above R120 000 (SARS Budget 2026 Tax Guide). Micro-business turnover tax is an alternative for small operators.',r:'VAT Act 89 of 1991 s7, s16, s17, s23'});
+ L.sort(function(a,c){return c.v-a.v});
+ var out='';
+ L.forEach(function(l){out+='<div class="lever"><h3>'+l.h+(l.v>0?' <span style="color:var(--acc)">· ≈ '+fmt(l.v)+'</span>':'')+'</h3><div>'+l.t+'</div><div class="ref">'+l.r+'</div></div>'});
+ $('levers').innerHTML=out;
+}
+['input','change','keyup','click'].forEach(function(e){document.addEventListener(e,run)});
+run();
+</script>
+</body>
+</html>
